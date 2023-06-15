@@ -1,39 +1,28 @@
 package com.example.ex_2.controller;
 
+import com.example.ex_2.service.ITranslateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Controller
 public class TranslateController {
+    @Autowired
+    private ITranslateService translateService;
+
     @GetMapping("")
     public String show() {
         return "index";
     }
 
-    @GetMapping("/translate")
+    @PostMapping("/translate")
     public String translate(@RequestParam String english, Model model) {
-        Map<String, String> list = new LinkedHashMap<>();
-        list.put("Cat", "Con Mèo");
-        list.put("Dog", "Con Chó");
-        list.put("Lion", "Sư Tủ");
-        list.put("Tiger", "Con Hổ");
-        String result = "";
-        for (String s : list.keySet()) {
-            if (s.equals(english)) {
-                result = list.get(s);
-                break;
-            }
-        }
-        if (result.equals("")) {
-            result = "Not found";
-        }
         model.addAttribute("english", english);
-        model.addAttribute("vietnamese", result);
+        model.addAttribute("vietnamese", translateService.getVietnamese(english));
         return "index";
     }
 }

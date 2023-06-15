@@ -12,7 +12,7 @@
 </head>
 <body>
 <h1 style="text-align: center">Translate English Into Vietnamese</h1>
-<form action="/translate" method="get">
+<form action="/translate" method="post">
     <table class="table">
         <thead>
         <tr>

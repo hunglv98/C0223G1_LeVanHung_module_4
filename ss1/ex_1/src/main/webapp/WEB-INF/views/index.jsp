@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -12,7 +13,7 @@
 </head>
 <body>
 <h1 style="text-align: center">CONVERT USD TO VND </h1>
-<form action="/convert" method="get">
+<form action="/convert" method="post">
     <table class="table">
         <thead>
         <tr>
@@ -24,12 +25,14 @@
         </thead>
         <tbody>
         <tr>
-            <td scope="row"><input required type="number" name="usd" value="${usd}"></td>
+            <td scope="row"><input required type="number" name="usd" id="usd" value="${usd}"></td>
             <td><input required type="number" name="rate" value="${rate}"></td>
             <td><input type="number" name="vnd" value="${vnd}" readonly></td>
+            <input type="hidden" name="usdCheck" id="usdCheck">
             <td>
                 <button class="btn btn-primary" type="submit">CONVERT</button>
             </td>
+
         </tr>
 
         </tbody>
