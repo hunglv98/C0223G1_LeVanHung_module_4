@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,25 +31,37 @@ public class ProductController {
     @PostMapping("/add")
     public String add(@ModelAttribute Product product, RedirectAttributes redirectAttributes) {
         productService.addProduct(product);
+        redirectAttributes.addFlashAttribute("message", "Thêm mới thành công");
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, RedirectAttributes redirectAttributes) {
-        productService.deleteProduct(id);
+        if (productService.findById(id) == null) {
+            redirectAttributes.addFlashAttribute("message", "Không tìm thấy đối tượng này");
+        } else {
+            productService.deleteProduct(id);
+            redirectAttributes.addFlashAttribute("message", "Xóa thành công");
+        }
         return "redirect:/";
     }
 
     @GetMapping("/edit/{id}")
-    public String showFormEdit(@PathVariable int id, Model model) {
+    public String showFormEdit(@PathVariable int id, Model model, RedirectAttributes redirectAttributes) {
         Product product = productService.findById(id);
-        model.addAttribute("product", product);
-        return "/edit";
+        if (product == null) {
+            redirectAttributes.addFlashAttribute("message", "Không tìm thấy đối tượng này");
+            return "redirect:/";
+        } else {
+            model.addAttribute("product", product);
+            return "/edit";
+        }
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute Product product) {
+    public String edit(@ModelAttribute Product product, RedirectAttributes redirectAttributes) {
         productService.editProduct(product);
+        redirectAttributes.addFlashAttribute("message", "Cập nhật thành công");
         return "redirect:/";
     }
 
