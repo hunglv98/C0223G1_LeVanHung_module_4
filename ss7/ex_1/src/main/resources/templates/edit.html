@@ -22,9 +22,14 @@
         <tbody>
         <td><input scope="row" th:field="*{name}"></td>
         <td><input scope="row" th:field="*{content}"></td>
+        <td><select id="blogType" th:field="*{blogType}">
+            <option th:each="bt:${blogTypeList}" th:text="${bt.name}"
+                    th:value="${bt.id}"></option>
+        </select></td>
         </tr>
         </tbody>
         <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{date}">
         <button type="submit" class="btn btn-primary">Edit</button>
     </table>
 </form>

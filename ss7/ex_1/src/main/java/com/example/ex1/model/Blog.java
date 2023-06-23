@@ -1,10 +1,8 @@
 package com.example.ex1.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Blog {
@@ -12,10 +10,17 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    @Column(columnDefinition = "long")
     private String content;
     private LocalDate date;
+    private boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_type", nullable = false)
+    private BlogType blogType;
 
     public Blog() {
+        this.status = false;
     }
 
     public Blog(int id, String name, String content, LocalDate date) {
@@ -23,6 +28,15 @@ public class Blog {
         this.name = name;
         this.content = content;
         this.date = date;
+        this.status = false;
+    }
+
+    public BlogType getBlogType() {
+        return blogType;
+    }
+
+    public void setBlogType(BlogType blogType) {
+        this.blogType = blogType;
     }
 
     public int getId() {
@@ -55,5 +69,13 @@ public class Blog {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
