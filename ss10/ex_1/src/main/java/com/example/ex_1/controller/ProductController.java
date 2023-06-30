@@ -32,7 +32,11 @@ public class ProductController {
     }
 
     @GetMapping("/detail/{id}")
-    public String getDetail(@PathVariable int id, Model model) {
+    public String getDetail(@PathVariable int id, Model model, RedirectAttributes redirectAttributes) {
+        if (productService.getProductById(id) == null) {
+            redirectAttributes.addFlashAttribute("message", "Not Found Object");
+            return "redirect:/product";
+        }
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         return "detail_product";
@@ -66,7 +70,12 @@ public class ProductController {
     }
 
     @GetMapping("cart/delete/{id}")
-    public String deleteProduct(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList) {
+    public String deleteProduct(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList
+            , RedirectAttributes redirectAttributes) {
+        if (productService.getProductById(id) == null) {
+            redirectAttributes.addFlashAttribute("message", "Not Found Object");
+            return "redirect:/product";
+        }
         Product product = productService.getProductById(id);
         for (Product p : orderList.keySet()
         ) {
@@ -79,12 +88,21 @@ public class ProductController {
     }
 
     @GetMapping("cart/decrease/{id}")
-    public String decrease(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList) {
+    public String decrease(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList,
+                           RedirectAttributes redirectAttributes) {
+        if (productService.getProductById(id) == null) {
+            redirectAttributes.addFlashAttribute("message", "Not Found Object");
+            return "redirect:/product";
+        }
         Product product = productService.getProductById(id);
         for (Product p : orderList.keySet()
         ) {
             if (p.getId() == product.getId()) {
-                orderList.put(p, orderList.get(p) - 1);
+                if (orderList.get(p) == 1) {
+                    orderList.remove(p);
+                } else {
+                    orderList.put(p, orderList.get(p) - 1);
+                }
                 break;
             }
         }
@@ -92,7 +110,12 @@ public class ProductController {
     }
 
     @GetMapping("cart/increase/{id}")
-    public String increase(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList) {
+    public String increase(@PathVariable int id, @SessionAttribute("productOrder") Map<Product, Integer> orderList,
+                           RedirectAttributes redirectAttributes) {
+        if (productService.getProductById(id) == null) {
+            redirectAttributes.addFlashAttribute("message", "Not Found Object");
+            return "redirect:/product";
+        }
         Product product = productService.getProductById(id);
         for (Product p : orderList.keySet()
         ) {
