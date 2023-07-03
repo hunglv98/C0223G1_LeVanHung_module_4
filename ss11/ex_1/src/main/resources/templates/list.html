@@ -34,7 +34,9 @@
         </thead>
         <tbody id="listBlog"></tbody>
     </table>
-    <a href="#" onclick="getListByNumber()">More</a>
+
+    <div id="more"></div>
+    <div id="list"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         let number = 0;
@@ -79,6 +81,11 @@
                 `;
                         }
                         $("#listBlog").html(blogStr);
+                        let moreStr = `<input type="hidden">`
+                        $("#more").html(moreStr);
+                        number = 0;
+                        let listStr = `<a href="#" onclick="getListByNumber()"><button class="btn btn-primary">Back to list</button></a>`
+                        $("#list").html(listStr);
                     },
                     error: function (error) {
                         alert("Not Found");
@@ -107,7 +114,11 @@
 </tr>
                 `;
                     }
+                    let moreStr = `<a href="#" onclick="getListByNumber()">More</a>`
                     $("#listBlog").html(blogStr);
+                    $("#more").html(moreStr);
+                    let listStr = `<input type="hidden">`
+                    $("#list").html(listStr);
                 },
                 error: function (error) {
                     alert("Not found")
